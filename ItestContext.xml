@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite Groups">
+    <test name="Test Group A">
+        <groups>
+            <run>
+                <include name="A"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="org.titanium.intermedio.PareametersByItestContext"/>
+        </classes>
+    </test>
+
+    <test name="Test Group B">
+        <groups>
+            <run>
+                <include name="B"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="org.titanium.intermedio.PareametersByItestContext"/>
+        </classes>
+    </test>
+</suite>
