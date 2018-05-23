@@ -52,7 +52,7 @@ public class JyperionListener implements ITestListener {
 	 */
 	public JyperionListener() {
 		log("JyperionListener()");
-		
+		//Test
 		this.document = new Document();
 		this.throwableMap = new HashMap<Integer, Throwable>();
 	}
