@@ -1,25 +1,19 @@
-package pdfReport;
+package org.titanium.reports;
 
-import java.awt.Color;
-import java.io.FileOutputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Set;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
+import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfAction;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+import java.awt.*;
+import java.io.FileOutputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * JyperionListener
@@ -52,7 +46,7 @@ public class JyperionListener implements ITestListener {
 	 */
 	public JyperionListener() {
 		log("JyperionListener()");
-		//Test
+		
 		this.document = new Document();
 		this.throwableMap = new HashMap<Integer, Throwable>();
 	}
@@ -158,11 +152,11 @@ public class JyperionListener implements ITestListener {
 			this.throwableMap.put(new Integer(throwable.hashCode()), throwable);
 			this.nbExceptions++;
 			
-			Paragraph  excep = new Paragraph(
+			/*Paragraph  excep = new Paragraph(
 		            throwable.toString());
-		        excep.add(imdb);
+		        excep.add(imdb);*/
 
-			cell = new PdfPCell(excep);
+			//cell = new PdfPCell(excep);
 			this.failTable.addCell(cell);
 		} else {
 			this.failTable.addCell(new PdfPCell(new Paragraph("")));
