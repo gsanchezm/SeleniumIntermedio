@@ -2,6 +2,7 @@ package org.titanium.reports;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.pdf.PdfAction;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -11,8 +12,10 @@ import org.testng.ITestResult;
 
 import java.awt.*;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -52,7 +55,7 @@ public class JyperionListener implements ITestListener {
 	}
 	
 	/**
-	 * @see com.beust.testng.ITestListener#onTestSuccess(com.beust.testng.ITestResult)
+	 * //@see com.beust.testng.ITestListener#onTestSuccess(com.beust.testng.ITestResult)
 	 */
 	public void onTestSuccess(ITestResult result) {
 		log("onTestSuccess("+result+")");
@@ -103,7 +106,7 @@ public class JyperionListener implements ITestListener {
 	}
 
 	/**
-	 * @see com.beust.testng.ITestListener#onTestFailure(com.beust.testng.ITestResult)
+	 * //@see com.beust.testng.ITestListener#onTestFailure(com.beust.testng.ITestResult)
 	 */
 	public void onTestFailure(ITestResult result) {
 		log("onTestFailure("+result+")");
@@ -111,8 +114,14 @@ public class JyperionListener implements ITestListener {
 		/*
 		 * Adding code to instruct Jyperion to take screensot on error
 		 */
-		
-		//*******************************************************************************************************
+		String file = System.getProperty("user.dir") + "/screenshots/screenshot_error" + new Random().nextInt() + ".png";
+
+        try {
+            BaseClass.takeScreenShot(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //*******************************************************************************************************
 		if (this.failTable == null) {
 			this.failTable = new PdfPTable(new float[]{.3f, .3f, .1f, .3f});
 			this.failTable.setTotalWidth(20f);
@@ -151,27 +160,29 @@ public class JyperionListener implements ITestListener {
 		if (throwable != null) {
 			this.throwableMap.put(new Integer(throwable.hashCode()), throwable);
 			this.nbExceptions++;
-			
-			/*Paragraph  excep = new Paragraph(
-		            throwable.toString());
-		        excep.add(imdb);*/
 
-			//cell = new PdfPCell(excep);
+			Chunk imss = new Chunk("[SCREEN SHOT]", new Font(Font.TIMES_ROMAN, Font.DEFAULTSIZE, Font.UNDERLINE));
+			imss.setAction(new PdfAction("file:///" + file));
+			Paragraph  excep = new Paragraph(throwable.toString());
+			excep.add(imss);
+
+			cell = new PdfPCell(excep);
 			this.failTable.addCell(cell);
+
 		} else {
 			this.failTable.addCell(new PdfPCell(new Paragraph("")));
 		}
 	}
 
 	/**
-	 * @see com.beust.testng.ITestListener#onTestSkipped(com.beust.testng.ITestResult)
+	 * //@see com.beust.testng.ITestListener#onTestSkipped(com.beust.testng.ITestResult)
 	 */
 	public void onTestSkipped(ITestResult result) {
 		log("onTestSkipped("+result+")");
 	}
 
 	/**
-	 * @see com.beust.testng.ITestListener#onStart(com.beust.testng.ITestContext)
+	 * //@see com.beust.testng.ITestListener#onStart(com.beust.testng.ITestContext)
 	 */
 	public void onStart(ITestContext context) {
 		log("onStart("+context+")");
@@ -194,7 +205,7 @@ public class JyperionListener implements ITestListener {
 	}
 
 	/**
-	 * @see com.beust.testng.ITestListener#onFinish(com.beust.testng.ITestContext)
+	 * //@see com.beust.testng.ITestListener#onFinish(com.beust.testng.ITestContext)
 	 */
 	public void onFinish(org.testng.ITestContext context) {
 		log("onFinish("+context+")");
